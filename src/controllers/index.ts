@@ -5,3 +5,12 @@ export const handlePostRequest = (req: CustomRequest , res: Response, next: Next
     console.log(`Hello ${req.params.world}`);
     res.json(req.body.name);
 }
+
+const throwAsyncError = async () => {
+    return new Promise((res, rej) => {
+      rej("Whoa")
+    })
+}
+export const errorProneRequest = async (req: Request , res: Response, next: NextFunction) => {
+    await throwAsyncError();
+}

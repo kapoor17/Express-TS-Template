@@ -1,7 +1,10 @@
+require("express-async-errors");
 import express from "express";
 import helmet from "helmet";
 import router from "./routes";
 import bodyParser from "body-parser";
+import errorHandler from "./middleware/errors";
+
 const app = express();
 
 // middlewares
@@ -10,6 +13,7 @@ app.use(bodyParser.json());
 
 // routes
 app.use("/", router)
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 const startServer = () => {
