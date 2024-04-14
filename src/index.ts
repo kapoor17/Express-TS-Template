@@ -1,21 +1,43 @@
 require("express-async-errors");
-import express from "express";
-import helmet from "helmet";
-import router from "./routes";
-import bodyParser from "body-parser";
-import errorHandler from "./middleware/errors";
 
+import express from "express";
 const app = express();
 
 // middlewares
+import helmet from "helmet";
+import bodyParser from "body-parser";
+import errorHandler from "./middleware/errors";
+import session from "express-session";
+
 app.use(helmet());
 app.use(bodyParser.json());
+declare module "express-session" {
+    interface SessionData {
+        user?: {
+            id: string,
+            name: string
+        },
+        authenticated?: boolean
+    }
+}
+app.use(session({
+    secret: process.env.SESSION_SECRET || "",
+    cookie: {
+        maxAge: 1000*60*60*24,
+        sameSite: "none",
+        secure: true
+    },
+    resave: false,
+    saveUninitialized: false,
+    store: new session.MemoryStore()
+}))
 
 // routes
+import router from "./routes";
 app.use("/", router)
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 const startServer = () => {
     try{
         app.listen(PORT, () => console.log(`Server listening at PORT: ${PORT}`))
