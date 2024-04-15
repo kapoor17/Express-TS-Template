@@ -10,6 +10,10 @@ declare module "express-session" {
 }
 
 export const sessionLoader = (app: Express) => {
+    /**
+     * Configuring the MongoDB Database for 
+     * storing the sessions
+     */
     let sessionStore;
     try{
         sessionStore = MongoStore.create({
@@ -27,7 +31,12 @@ export const sessionLoader = (app: Express) => {
         saveUninitialized: false,
         store: sessionStore
     }
-    // secure needs an https connection, that is why it was giving new session tds with every request
+
+    /**
+     * secure needs an https connection, that is why 
+     * it was giving new session tds with every request
+     * when testing locally
+     */
     if(app.get('env') == 'production' && sessionObject.cookie){
         app.set('trust proxy', 1);
         sessionObject.cookie.secure = true
