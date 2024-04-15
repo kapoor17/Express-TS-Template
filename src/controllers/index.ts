@@ -6,11 +6,11 @@ export const handlePostRequest = (req: CustomRequest , res: Response, next: Next
     res.json(req.body.name);
 }
 
-const throwAsyncError = async () => {
-    return new Promise((res, rej) => {
-      rej("Whoa")
-    })
-}
 export const errorProneRequest = async (req: Request , res: Response, next: NextFunction) => {
+    const throwAsyncError = async () => {
+        return new Promise((res, rej) => {
+          rej(new Error("Whoa"))
+        })
+    }
     await throwAsyncError();
 }
