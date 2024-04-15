@@ -4,6 +4,7 @@ import express from "express";
 const app = express();
 
 // middlewares
+import 'dotenv/config';
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import errorHandler from "./middleware/errors";
