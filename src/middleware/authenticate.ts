@@ -1,11 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { UnauthenticatedError } from "../errors";
-
-interface CustomJwtPayload extends JwtPayload {
-    userId: string,
-    userName: string
-}
 
 const authenticate = (req: Request, res: Response, next: NextFunction) => {
     if(req.session.isAuthenticated && req.session.userId){
