@@ -33,8 +33,8 @@ app.use(session({
 }))
 
 // routes
-import router from "./routes";
-app.use("/", router)
+import authRouter from "./routes/auth";
+app.use("/auth", authRouter)
 app.use(errorHandler);
 
 const PORT = process.env.PORT;
