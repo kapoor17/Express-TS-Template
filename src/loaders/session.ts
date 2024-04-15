@@ -2,11 +2,8 @@ import {Express} from 'express';
 import session, {SessionOptions} from "express-session";
 declare module "express-session" {
     interface SessionData {
-        user: {
-            id: string,
-            name: string
-        },
-        authenticated: boolean
+        userId: string,
+        isAuthenticated: boolean
     }
 }
 

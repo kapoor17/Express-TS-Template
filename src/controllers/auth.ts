@@ -9,14 +9,19 @@ export const handleLogin = async (req: LoginRequest, res: Response, next: NextFu
         throw new BadRequestError("User details missing");
     }
 
+    //connect to DB
+    //check the user in DB
+    //get the uuid for that user
+    //and attach that uuid to the session object
+
+    req.session.isAuthenticated = true;
+    req.session.userId = 'acbd'
+
     res.send({
         session: req.session,
         id: req.session.id,
         store: req.sessionStore
     })
-
-
-    //connect to DB
 }
 
 export const handleRegistration = async (req: RegistrationRequest, res: Response, next: NextFunction) => {
@@ -29,12 +34,10 @@ export const handleRegistration = async (req: RegistrationRequest, res: Response
     //connect to DB
     //create a new user
     //get the uuid for that user
+    //and attach that uuid to the session object
 
-    req.session.authenticated = true;
-    req.session.user = {
-        id: 'hi',
-        name: `${first_name} ${last_name}`
-    }
+    req.session.isAuthenticated = true;
+    req.session.userId = 'acbd'
 
     res.send({
         session: req.sessionID,

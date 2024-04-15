@@ -8,22 +8,12 @@ interface CustomJwtPayload extends JwtPayload {
 }
 
 const authenticate = (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    if(!authHeader || !authHeader.startsWith('Bearer')){
-        throw new UnauthenticatedError('Authentication Token Invalid');
-    }
-    
-    const token = authHeader.split(' ')[0];
-    try{
-        const payload = jwt.verify(token, process.env.JWT_SECRET || "") as CustomJwtPayload;
-        req.session.authenticated = true;
-        req.session.user = {
-            id: payload.userId,
-            name: payload.userName
-        };
+    if(req.session.isAuthenticated && req.session.userId){
+        //check the userId in the DB and attach more information if needed to the session object.
+        //if not present then throw new error
         next();
-    }catch(e){
-        throw new UnauthenticatedError('Could not verify Token');
+    }else{
+        throw new UnauthenticatedError('Request not authorized');
     }
 }
 
