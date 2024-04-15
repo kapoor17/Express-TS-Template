@@ -1,4 +1,3 @@
-import {  } from "express";
 import { Express } from "express";
 import helmet from "helmet";
 import bodyParser from "body-parser";
