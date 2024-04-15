@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from 'bcrypt';
 import { RegistrationRequest } from "../type/auth.interface";
-import { BadRequestError } from "../errors";
 
 export const hashPassword = async (req: RegistrationRequest, res: Response, next: NextFunction) => {
     const {password} = req.body;

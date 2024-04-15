@@ -9,6 +9,13 @@ export const handleLogin = async (req: LoginRequest, res: Response, next: NextFu
         throw new BadRequestError("User details missing");
     }
 
+    res.send({
+        session: req.session,
+        id: req.session.id,
+        store: req.sessionStore
+    })
+
+
     //connect to DB
 }
 
@@ -20,4 +27,18 @@ export const handleRegistration = async (req: RegistrationRequest, res: Response
     }
 
     //connect to DB
+    //create a new user
+    //get the uuid for that user
+
+    req.session.authenticated = true;
+    req.session.user = {
+        id: 'hi',
+        name: `${first_name} ${last_name}`
+    }
+
+    res.send({
+        session: req.sessionID,
+        id: req.session.id,
+        store: req.sessionStore
+    })
 }
