@@ -17,7 +17,7 @@ export const sessionLoader = (app: Express) => {
     let sessionStore;
     try{
         sessionStore = MongoStore.create({
-            mongoUrl: process.env.MONGO_SESSION_STORE_URI || ""
+            mongoUrl: process.env.MONGO_URI || ""
         })
     }catch(e){
         console.error(`Error while connecting to Mongo Session Store: ${e}`);

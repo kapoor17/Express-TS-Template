@@ -1,20 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { UnauthenticatedError } from "../errors";
+import passport from 'passport';
 
-interface CustomJwtPayload extends JwtPayload {
-    userId: string,
-    userName: string
-}
-
-const authenticate = (req: Request, res: Response, next: NextFunction) => {
-    if(req.session.isAuthenticated && req.session.userId){
-        //check the userId in the DB and attach more information if needed to the session object.
-        //if not present then throw new error
-        next();
-    }else{
-        throw new UnauthenticatedError('Request not authorized');
-    }
-}
+const authenticate = passport.authenticate('local', {
+    failureRedirect: '/login',
+    // successRedirect: '/'
+})
 
 export default authenticate
