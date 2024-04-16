@@ -40,6 +40,7 @@ export const sessionLoader = (app: Express) => {
     if(app.get('env') == 'production' && sessionObject.cookie){
         app.set('trust proxy', 1);
         sessionObject.cookie.secure = true
+        sessionObject.cookie.httpOnly = true
     }
     
     app.use(session(sessionObject));

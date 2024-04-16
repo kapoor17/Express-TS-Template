@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { LoginRequest, RegistrationRequest } from "../types/auth.interface";
 import { BadRequestError } from "../errors";
 import User from "../models/User";

@@ -13,6 +13,7 @@ const passportLoader = (app: Express) => {
         try{
             const user = await User.findOne({email});
             console.log(user, 'inside verify callback', typeof user)
+            if(!user) done(null, false)
             if(!user?.verifyPassword(password)){
                 return done(null, false)
             }
