@@ -17,5 +17,5 @@ export const errorProneRequest = async (req: Request , res: Response, next: Next
           rej(new Error("Whoa"))
         })
     }
-    await throwAsyncError();
+    await throwAsyncError()
 }
