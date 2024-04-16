@@ -5,6 +5,7 @@ import { sessionLoader } from "./session";
 import { routesLoader } from "./routes";
 import errorHandler from "../middleware/errors";
 import morgan from 'morgan';
+import passportLoader from "./passport";
 
 const appLoader = (app: Express) => {
     app.use(helmet());
@@ -12,6 +13,7 @@ const appLoader = (app: Express) => {
     app.use(morgan('dev'))
     
     sessionLoader(app);
+    passportLoader(app);
     routesLoader(app);
 
     app.use(errorHandler);

@@ -1,15 +1,7 @@
 import {Express} from 'express';
 import passport from 'passport'
 import LocalStrategy, {VerifyFunction, IStrategyOptions} from 'passport-local';
-
-interface UserNew {
-    id: string
-}
-declare global {
-    namespace Express {
-      interface User extends UserNew {}
-    }
-}
+import User from '../models/User';
 
 const passportLoader = (app: Express) => {
     
@@ -17,34 +9,35 @@ const passportLoader = (app: Express) => {
         usernameField: "email",
     }
 
-    const verifyCallback: VerifyFunction = (email, password, done) => {
-        /**
-         * 
-         * Find the user in DB and pass the user in 
-         * done callback or else pass errors in it
-         * example
-         * User.findOne({ username: username }, function (err, user) {
-         *   if (err) { return done(err); }
-         *   if (!user) { return done(null, false); }
-         *   if (!user.verifyPassword(password)) { return done(null, false); }
-         *   return done(null, user);
-         * });
-         * 
-         */
+    const verifyCallback: VerifyFunction = async (email, password, done) => {
+        try{
+            const user = await User.findOne({email});
+            console.log(user, 'inside verify callback', typeof user)
+            if(!user?.verifyPassword(password)){
+                return done(null, false)
+            }
+            return done(null, user);
+        }catch(e){
+            console.error(`Error while authenticating the User: ${e}`);
+            return done(e)
+        }
     }
 
     const localStrategy = new LocalStrategy.Strategy(customFields, verifyCallback);
 
     passport.use(localStrategy)
 
-    passport.serializeUser((user, done) => {
-        done(null, user.id)
+    passport.serializeUser(async (user, done) => {
+        //@ts-ignore
+        done(null, user._id)
     });
 
     passport.deserializeUser((userId, done) => {
-        let user;
-        // find user based on the user id and send it inside the done callback
-        done(null, user)
+        console.log(`Deserializing User`)
+        console.log({userId})
+        User.findById(userId)
+            .then(user => done(null, user))
+            .catch((e) => done(e));
     })
 
     app.use(passport.initialize());
