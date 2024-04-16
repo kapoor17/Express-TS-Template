@@ -1,10 +1,32 @@
 import { NextFunction, Request, Response } from "express";
-import { UnauthenticatedError } from "../errors";
+import { BadRequestError, UnauthenticatedError } from "../errors";
 import passport from 'passport';
 
-const authenticate = passport.authenticate('local', {
+export const authenticate = passport.authenticate('local', {
     failureRedirect: '/login',
     // successRedirect: '/'
 })
 
-export default authenticate
+export const isUnauthenticated = (req: Request, res: Response, next: NextFunction) => {
+    if(req.isUnauthenticated()){
+        next();
+    }else{
+        throw new BadRequestError('You are already authenticated!');
+    }
+}
+
+export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
+    if(req.isAuthenticated()){
+        next();
+    }else{
+        throw new UnauthenticatedError('You are not authenticated!');
+    }
+}
+
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+    if(req.isAuthenticated() /** && Some condition to check if the user is admin */){
+        next();
+    }else{
+        throw new UnauthenticatedError('You are not authenticated!');
+    }
+}

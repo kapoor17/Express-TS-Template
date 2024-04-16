@@ -28,11 +28,20 @@ const passportLoader = (app: Express) => {
 
     passport.use(localStrategy)
 
+    /**
+     * grabs the user from the db and attaches 
+     * the user id to the req.session.passport.user object
+     */
     passport.serializeUser(async (user, done) => {
         //@ts-ignore
         done(null, user._id)
     });
 
+    /**
+     * based on the userId provided it finds the user
+     * in the database and attached the user into 
+     * req.user
+     */
     passport.deserializeUser((userId, done) => {
         console.log(`Deserializing User`)
         console.log({userId})

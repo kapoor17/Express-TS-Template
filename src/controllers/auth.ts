@@ -1,4 +1,4 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { LoginRequest, RegistrationRequest } from "../types/auth.interface";
 import { BadRequestError } from "../errors";
 import User from "../models/User";
@@ -31,4 +31,11 @@ export const handleRegistration = async (req: RegistrationRequest, res: Response
             name: user.name
         }
     })
+}
+
+export const handleLogout = (req: Request, res: Response, next: NextFunction) => {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
 }
