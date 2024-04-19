@@ -6,3 +6,5 @@ export const routesLoader = (app: Express) => {
     app.use("/", router)
     app.use("/auth", authRouter)
 }
+
+export default routesLoader;

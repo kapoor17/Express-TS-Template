@@ -12,7 +12,6 @@ const passportLoader = (app: Express) => {
     const verifyCallback: VerifyFunction = async (email, password, done) => {
         try{
             const user = await User.findOne({email});
-            console.log(user, 'inside verify callback', typeof user)
             if(!user) done(null, false)
             if(!user?.verifyPassword(password)){
                 return done(null, false)
@@ -33,7 +32,6 @@ const passportLoader = (app: Express) => {
      * the user id to the req.session.passport.user object
      */
     passport.serializeUser(async (user, done) => {
-        //@ts-ignore
         done(null, user._id)
     });
 
@@ -43,8 +41,6 @@ const passportLoader = (app: Express) => {
      * req.user
      */
     passport.deserializeUser((userId, done) => {
-        console.log(`Deserializing User`)
-        console.log({userId})
         User.findById(userId)
             .then(user => done(null, user))
             .catch((e) => done(e));

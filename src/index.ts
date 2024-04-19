@@ -4,6 +4,7 @@ import 'dotenv/config';
 import express from "express";
 import appLoader from "./loaders";
 import connectDB from "./models/connectDB";
+
 const app = express();
 
 const PORT = process.env.PORT;

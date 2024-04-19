@@ -9,10 +9,10 @@ declare module "express-session" {
     }
 }
 
-export const sessionLoader = (app: Express) => {
+const sessionLoader = (app: Express) => {
     /**
-     * Configuring the MongoDB Database for 
-     * storing the sessions
+     * Configure the MongoDB Database 
+     * for storing the sessions
      */
     let sessionStore;
     try{
@@ -45,3 +45,5 @@ export const sessionLoader = (app: Express) => {
     
     app.use(session(sessionObject));
 }
+
+export default sessionLoader

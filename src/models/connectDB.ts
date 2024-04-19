@@ -1,7 +1,7 @@
-import moongose from "mongoose";
+import mongoose from "mongoose";
 
 const connectDB = (URI: string) => {
-    return moongose.connect(URI)
+    return mongoose.connect(URI)
                     .then(() => console.log('Connected to the Database Successfully!'));
 }
 

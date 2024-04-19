@@ -1,5 +1,18 @@
-import mongoose, {Model} from 'mongoose';
+import mongoose, {Model, Types} from 'mongoose';
 import bcrypt from 'bcrypt';
+
+/**
+ * Declaring a global namespace for 
+ * Express.User to access methods and 
+ * properties on a User instance
+ */
+declare global {
+    namespace Express {
+      interface User extends IUser, IUserMethods {
+        _id: Types.ObjectId
+      }
+    }
+}
 
 interface IUser {
     name: string;

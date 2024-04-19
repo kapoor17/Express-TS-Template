@@ -1,11 +1,13 @@
 import { Express } from "express";
 import helmet from "helmet";
 import bodyParser from "body-parser";
-import { sessionLoader } from "./session";
-import { routesLoader } from "./routes";
-import errorHandler from "../middleware/errors";
 import morgan from 'morgan';
+
+import sessionLoader from "./session";
+import routesLoader from "./routes";
 import passportLoader from "./passport";
+
+import { errorHandler } from "../middleware";
 
 const appLoader = (app: Express) => {
     app.use(helmet());
