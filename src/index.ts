@@ -7,7 +7,7 @@ const { PORT } = process.env;
 
 (async () => {
   try {
-    expressLoader(app);
+    await expressLoader(app);
     app.listen(PORT, () => console.log(`Server Listening at PORT: ${PORT}`));
   } catch (err) {
     console.error('Could not connect to the server');
