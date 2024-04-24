@@ -4,20 +4,24 @@ import LocalStrategy, {
   VerifyFunction,
   IStrategyOptions
 } from 'passport-local';
+import { ObjectId } from 'mongodb';
+import { Customers } from '../models/Customer';
 
 const passportLoader = (app: Express) => {
   const customFields: IStrategyOptions = {
     usernameField: 'email'
   };
 
-  const verifyCallback: VerifyFunction = (email, passport, done) => {
+  // eslint-disable-next-line consistent-return
+  const verifyCallback: VerifyFunction = async (email, password, done) => {
     try {
-      /**
-       * Find your user and return using done func
-       */
+      const customer = await Customers.findOne({ email });
+      if (!customer) return done(null, false);
+      if (customer.password !== password) return done(null, false);
+      return done(null, customer);
     } catch (err) {
       console.error(`Passport could not verify the user: ${err}`);
-      throw err;
+      done(err);
     }
   };
 
@@ -28,11 +32,11 @@ const passportLoader = (app: Express) => {
 
   passport.use(localStrategy);
 
-  passport.serializeUser((user, done) => done(user.id));
-  passport.deserializeUser((userId, done) => {
-    /**
-     * Find the user using userID and return the User
-     */
+  passport.serializeUser((user, done) => done(user._id));
+  passport.deserializeUser((userID: ObjectId, done) => {
+    Customers.findOne({ _id: userID })
+      .then((customer) => done(null, customer))
+      .catch((err) => done(err));
   });
 
   app.use(passport.initialize());
