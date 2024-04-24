@@ -1,3 +1,5 @@
-const c = 'hello';
+import express from 'express';
 
-console.log(c, 'heelp');
+const app = express();
+
+app.listen();

@@ -4,7 +4,7 @@
     "airbnb-base",
     "airbnb-typescript/base",
     "prettier",
-    "plugins:node/recommended"
+    "plugin:node/recommended"
   ],
   "rules": {
     "comma-dangle": 0,
@@ -16,7 +16,8 @@
     "@typescript-eslint/no-redeclare": 0,
     "no-console": "off",
     "prettier/prettier": "warn",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "node/no-unsupported-features/es-syntax": "off"
   },
   "plugins": ["prettier", "import", "@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
