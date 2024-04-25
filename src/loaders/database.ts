@@ -1,11 +1,13 @@
-import { client } from '../models/database';
+import { connect } from 'mongoose';
 
-const databaseLoader = async () => {
+const databaseLoader = async (MONGO_URI: string) => {
   try {
-    await client.connect();
-    console.log('Successfully connected to the Database!');
+    return await connect(MONGO_URI).then(() =>
+      console.log('Successfully connected to the Database!')
+    );
   } catch (err) {
     console.error('Could not connect to the Database! :(');
+    throw err;
   }
 };
 

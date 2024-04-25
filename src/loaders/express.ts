@@ -17,10 +17,13 @@ const expressLoader = async (app: Express) => {
   app.use(express.json());
   app.use(helmet());
 
-  await databaseLoader();
+  const { MONGO_URI = '' } = process.env;
+  await databaseLoader(MONGO_URI);
+
   await sessionsLoader(app);
-  routesLoader(app);
   passportLoader(app);
+
+  routesLoader(app);
 
   app.use(errorHandler);
 };
