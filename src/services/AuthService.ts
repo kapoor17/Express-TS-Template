@@ -1,13 +1,19 @@
 import { HydratedDocument } from 'mongoose';
 
 import { Customer } from '../models/Customer';
-import { BadRequestError, NotFoundError } from '../errors';
+import { BadRequestError, CustomError, NotFoundError } from '../errors';
 import CustomerService from './CustomerService';
 
 class AuthService {
   public static async register(
     data: Customer
   ): Promise<HydratedDocument<Customer>> {
+    const doesUserAlreadyExists = CustomerService.findOne({
+      email: data.email
+    });
+    if (doesUserAlreadyExists != null) {
+      throw new CustomError('User Already Exists', 409);
+    }
     const customer = await CustomerService.createOne(data);
     return customer;
   }

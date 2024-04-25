@@ -22,5 +22,7 @@ export const handleLogin = async (
   req: Request<{}, {}, Pick<Customer, 'email' | 'password'>>,
   res: Response
 ) => {
+  console.log(req.user);
+  console.log(req.session);
   res.json(req.user);
 };

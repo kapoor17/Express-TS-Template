@@ -7,6 +7,12 @@ declare global {
   }
 }
 
+export type Customer = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 type ICustomerMethods = {
   comparePassword: (password: string) => Promise<boolean>;
 };
@@ -52,8 +58,3 @@ CustomerSchema.methods.comparePassword = async function (password: string) {
 };
 
 export const Customer = mongoose.model('Customers', CustomerSchema);
-export type Customer = {
-  name: string;
-  email: string;
-  password: string;
-};
