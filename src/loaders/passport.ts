@@ -6,6 +6,7 @@ import LocalStrategy, {
 } from 'passport-local';
 import { ObjectId } from 'mongodb';
 import { Customers } from '../models/Customer';
+import AuthService from '../services/AuthService';
 
 const passportLoader = (app: Express) => {
   const customFields: IStrategyOptions = {
@@ -15,9 +16,8 @@ const passportLoader = (app: Express) => {
   // eslint-disable-next-line consistent-return
   const verifyCallback: VerifyFunction = async (email, password, done) => {
     try {
-      const customer = await Customers.findOne({ email });
+      const customer = await AuthService.login({ email, password });
       if (!customer) return done(null, false);
-      if (customer.password !== password) return done(null, false);
       return done(null, customer);
     } catch (err) {
       console.error(`Passport could not verify the user: ${err}`);

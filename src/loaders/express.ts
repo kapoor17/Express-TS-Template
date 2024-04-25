@@ -6,6 +6,7 @@ import { errorHandler } from '../middlewares/errorHandler';
 import sessionsLoader from './sessions';
 import passportLoader from './passport';
 import databaseLoader from './database';
+import routesLoader from './routes';
 
 require('dotenv').config();
 require('express-async-errors');
@@ -18,6 +19,7 @@ const expressLoader = async (app: Express) => {
 
   await databaseLoader();
   await sessionsLoader(app);
+  routesLoader(app);
   passportLoader(app);
 
   app.use(errorHandler);
