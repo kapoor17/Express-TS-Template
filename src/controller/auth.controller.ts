@@ -24,5 +24,5 @@ export const handleLogin = async (
 ) => {
   console.log(req.user);
   console.log(req.session);
-  res.json(req.user);
+  res.json({ 1: req.user, 2: req.sessionID });
 };

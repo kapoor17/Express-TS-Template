@@ -7,7 +7,7 @@ const sessionsLoader = async (app: Express) => {
 
   let sessionStore;
   try {
-    sessionStore = await MongoStore.create({
+    sessionStore = MongoStore.create({
       mongoUrl: MONGO_URI
     });
   } catch (err) {
