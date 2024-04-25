@@ -17,12 +17,12 @@ const sessionsLoader = async (app: Express) => {
 
   const sessionObject: SessionOptions = {
     secret: SESSION_SECRET,
-    store: sessionStore,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 4 // 4 hours
-    },
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 4 // 4 hours,
+    },
+    store: sessionStore
   };
 
   if (NODE_ENV === 'production' && sessionObject.cookie) {

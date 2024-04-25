@@ -8,9 +8,10 @@ class AuthService {
   public static async register(
     data: Customer
   ): Promise<HydratedDocument<Customer>> {
-    const doesUserAlreadyExists = CustomerService.findOne({
+    const doesUserAlreadyExists = await CustomerService.findOne({
       email: data.email
     });
+    console.log(doesUserAlreadyExists);
     if (doesUserAlreadyExists != null) {
       throw new CustomError('User Already Exists', 409);
     }

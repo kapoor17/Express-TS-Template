@@ -4,8 +4,8 @@ import passport from 'passport';
 import { BadRequestError, UnauthenticatedError } from '../errors';
 
 export const authenticate = passport.authenticate('local', {
-  failureRedirect: '/login'
-  // successRedirect: '/'
+  failureRedirect: '/login',
+  successRedirect: '/'
 });
 
 export const isUnauthenticated = (

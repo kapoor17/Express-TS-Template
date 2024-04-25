@@ -17,12 +17,3 @@ export const handleRegister = async (
     next(err);
   }
 };
-
-export const handleLogin = async (
-  req: Request<{}, {}, Pick<Customer, 'email' | 'password'>>,
-  res: Response
-) => {
-  console.log(req.user);
-  console.log(req.session);
-  res.json({ 1: req.user, 2: req.sessionID });
-};
