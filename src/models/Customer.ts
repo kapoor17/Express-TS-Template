@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import mongoose, { HydratedDocument, Model } from 'mongoose';
+import * as z from 'zod';
 
 declare global {
   namespace Express {
@@ -7,11 +8,16 @@ declare global {
   }
 }
 
-export type Customer = {
-  name: string;
-  email: string;
-  password: string;
-};
+const CustomerSchemaZod = z.object({
+  name: z
+    .string()
+    .min(5, { message: 'Must be minimum of 5 characters' })
+    .max(20, { message: 'Must be maximum of 20 characters' }),
+  email: z.string().email(),
+  password: z.string().min(5, { message: 'Must be minimum of 5 characters' })
+});
+
+export type Customer = z.infer<typeof CustomerSchemaZod>;
 
 type ICustomerMethods = {
   comparePassword: (password: string) => Promise<boolean>;
