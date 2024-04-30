@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
-import { errorHandler } from '../middlewares/errorHandler';
+import { errorHandler, notFound } from '../middlewares';
 import sessionsLoader from './sessions';
 import passportLoader from './passport';
 import databaseLoader from './database';
@@ -25,6 +25,7 @@ const expressLoader = async (app: Express) => {
 
   routesLoader(app);
 
+  app.use(notFound);
   app.use(errorHandler);
 };
 

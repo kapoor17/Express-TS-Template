@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-const CustomerSchemaZod = z.object({
+export const ZodCustomerSchema = z.object({
   name: z
     .string()
     .min(5, { message: 'Must be minimum of 5 characters' })
@@ -17,18 +17,18 @@ const CustomerSchemaZod = z.object({
   password: z.string().min(5, { message: 'Must be minimum of 5 characters' })
 });
 
-export type Customer = z.infer<typeof CustomerSchemaZod>;
+export type Customer = z.infer<typeof ZodCustomerSchema>;
 
-type ICustomerMethods = {
+type CustomerMethods = {
   comparePassword: (password: string) => Promise<boolean>;
 };
 
-type CustomerModel = Model<Customer, {}, ICustomerMethods>;
+type CustomerModel = Model<Customer, {}, CustomerMethods>;
 
 const CustomerSchema = new mongoose.Schema<
   Customer,
   CustomerModel,
-  ICustomerMethods
+  CustomerMethods
 >({
   name: {
     type: String,
@@ -39,10 +39,6 @@ const CustomerSchema = new mongoose.Schema<
   email: {
     type: String,
     required: [true, 'Please provide an email'],
-    match: [
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      'Please provide a valid email'
-    ],
     unique: true
   },
   password: {
@@ -52,15 +48,20 @@ const CustomerSchema = new mongoose.Schema<
   }
 });
 
-CustomerSchema.pre('save', async function () {
+CustomerSchema.pre('save', async function genHash() {
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash(this.password, salt);
   this.password = passwordHash;
 });
 
-CustomerSchema.methods.comparePassword = async function (password: string) {
+CustomerSchema.methods.comparePassword = async function comparePassword(
+  password: string
+) {
   const doesPasswordMatch = await bcrypt.compare(password, this.password);
   return doesPasswordMatch;
 };
 
-export const Customer = mongoose.model('Customers', CustomerSchema);
+export const Customer = mongoose.model<Customer, CustomerModel>(
+  'Customers',
+  CustomerSchema
+);
