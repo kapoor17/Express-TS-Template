@@ -3,6 +3,7 @@ export class CustomError extends Error {
 
   constructor(errorMessage: string, status: number) {
     super(errorMessage);
+    Object.setPrototypeOf(this, CustomError.prototype);
     this.status = status;
   }
 }

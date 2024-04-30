@@ -3,16 +3,18 @@ import { CustomError } from '../errors';
 import config from '../config';
 
 export const errorHandler = (
-  err: CustomError,
+  err: Error,
   req: Request,
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) => {
   const { NODE_ENV } = config.server;
-  const statusCode = err.status || 500;
-  res.status(statusCode);
-  res.json({
+  let statusCode = 500;
+  if (err instanceof CustomError) {
+    statusCode = err.status;
+  }
+  res.status(statusCode).json({
     error: err.message,
     stack: NODE_ENV === 'production' ? ':)' : err.stack
   });
