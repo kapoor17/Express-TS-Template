@@ -23,7 +23,7 @@ type CustomerMethods = {
   comparePassword: (password: string) => Promise<boolean>;
 };
 
-type CustomerModel = Model<Customer, {}, CustomerMethods>;
+export type CustomerModel = Model<Customer, {}, CustomerMethods>;
 
 const CustomerSchema = new mongoose.Schema<
   Customer,

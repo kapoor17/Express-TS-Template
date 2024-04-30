@@ -4,7 +4,9 @@ import LocalStrategy, {
   VerifyFunction,
   IStrategyOptions
 } from 'passport-local';
-import { Customer } from '../models/Customer';
+import { Types } from 'mongoose';
+import Customer from '../services/CustomerService';
+import AuthService from '../services/AuthService';
 
 const passportLoader = (app: Express) => {
   const customFields: IStrategyOptions = {
@@ -13,14 +15,10 @@ const passportLoader = (app: Express) => {
 
   const verifyCallback: VerifyFunction = async (email, password, done) => {
     try {
-      const user = await Customer.findOne({ email });
-      if (!user) done(null, false);
-      if (!user?.comparePassword(password)) {
-        return done(null, false);
-      }
+      const user = await AuthService.login({ email, password });
       return done(null, user);
     } catch (e) {
-      console.error(`Error while authenticating the Customer: ${e}`);
+      console.error(`Error while authenticating the Customer`);
       return done(e);
     }
   };
@@ -36,8 +34,8 @@ const passportLoader = (app: Express) => {
     done(null, user._id);
   });
 
-  passport.deserializeUser((userId, done) => {
-    Customer.findById(userId)
+  passport.deserializeUser((_id: Types.ObjectId, done) => {
+    Customer.findOne({ _id })
       .then((user) => done(null, user))
       .catch((e) => done(e));
   });
