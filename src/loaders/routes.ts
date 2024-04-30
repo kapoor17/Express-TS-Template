@@ -1,10 +1,9 @@
-import { Express } from "express"
-import authRouter from "../routes/auth";
-import router from "../routes";
+import { Express } from 'express';
+import authRouter from '../routes/auth.route';
 
-export const routesLoader = (app: Express) => {
-    app.use("/", router)
-    app.use("/auth", authRouter)
-}
+const routesLoader = (app: Express) => {
+  app.get('/', (req, res) => res.json({ 1: req.session.id }));
+  app.use('/auth', authRouter);
+};
 
 export default routesLoader;
