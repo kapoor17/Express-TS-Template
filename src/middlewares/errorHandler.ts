@@ -1,17 +1,21 @@
 import { NextFunction, Request, Response } from 'express';
 import { CustomError } from '../errors';
+import config from '../config';
 
 export const errorHandler = (
-  err: CustomError,
+  err: Error,
   req: Request,
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) => {
-  const statusCode = err.status || 500;
-  res.status(statusCode);
-  res.json({
+  const { NODE_ENV } = config.server;
+  let statusCode = 500;
+  if (err instanceof CustomError) {
+    statusCode = err.status;
+  }
+  res.status(statusCode).json({
     error: err.message,
-    stack: process.env.NODE_ENV === 'production' ? ':)' : err.stack
+    stack: NODE_ENV === 'production' ? ':)' : err.stack
   });
 };

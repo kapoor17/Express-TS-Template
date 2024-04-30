@@ -1,9 +1,10 @@
 import express from 'express';
 import expressLoader from './loaders/express';
+import config from './config';
 
 const app = express();
 
-const { PORT } = process.env;
+const { PORT } = config.server;
 
 (async () => {
   try {

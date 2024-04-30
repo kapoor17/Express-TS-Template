@@ -1,11 +1,10 @@
-import { HydratedDocument } from 'mongoose';
+import { Types } from 'mongoose';
+
 import { Customer } from '../models/Customer';
 import { NotFoundError } from '../errors';
 
 class CustomerService {
-  public static async createOne(
-    data: Customer
-  ): Promise<HydratedDocument<Customer>> {
+  public static async createOne(data: Customer) {
     try {
       const customer = await Customer.create(data);
       return customer;
@@ -15,8 +14,11 @@ class CustomerService {
     }
   }
 
-  public static findOne(data: Record<'email', string> | Record<'id', string>) {
-    const customer = Customer.findOne(data);
+  public static async findOne(
+    data: Record<'email', string> | Record<'_id', Types.ObjectId>
+  ) {
+    const customer = await Customer.findOne(data);
+    console.log({ customer, data });
     if (!customer) {
       throw new NotFoundError('User does not exist!');
     }
