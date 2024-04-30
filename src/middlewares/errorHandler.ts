@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { CustomError } from '../errors';
+import config from '../config';
 
 export const errorHandler = (
   err: CustomError,
@@ -8,10 +9,11 @@ export const errorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) => {
+  const { NODE_ENV } = config.server;
   const statusCode = err.status || 500;
   res.status(statusCode);
   res.json({
     error: err.message,
-    stack: process.env.NODE_ENV === 'production' ? ':)' : err.stack
+    stack: NODE_ENV === 'production' ? ':)' : err.stack
   });
 };

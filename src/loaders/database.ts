@@ -1,6 +1,8 @@
 import { connect } from 'mongoose';
+import config from '../config';
 
-const databaseLoader = async (MONGO_URI: string) => {
+const databaseLoader = async () => {
+  const { MONGO_URI } = config.mongo;
   try {
     return await connect(MONGO_URI).then(() =>
       console.log('Successfully connected to the Database!')

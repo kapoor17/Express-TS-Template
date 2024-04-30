@@ -15,10 +15,10 @@ const expressLoader = async (app: Express) => {
   app.use(cors());
   app.use(morgan('dev'));
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(helmet());
 
-  const { MONGO_URI = '' } = process.env;
-  await databaseLoader(MONGO_URI);
+  await databaseLoader();
 
   await sessionsLoader(app);
   passportLoader(app);
