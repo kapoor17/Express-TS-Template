@@ -17,13 +17,13 @@ export const ZodCustomerSchema = z.object({
   password: z.string().min(5, { message: 'Must be minimum of 5 characters' })
 });
 
-export type Customer = z.infer<typeof ZodCustomerSchema>;
+export type Customer = z.infer<typeof ZodCustomerSchema> & CustomerMethods;
 
 type CustomerMethods = {
   comparePassword: (password: string) => Promise<boolean>;
 };
 
-export type CustomerModel = Model<Customer, {}, CustomerMethods>;
+type CustomerModel = Model<Customer, {}, CustomerMethods>;
 
 const CustomerSchema = new mongoose.Schema<
   Customer,
