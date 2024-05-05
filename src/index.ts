@@ -1,14 +1,14 @@
-import express from 'express';
 import expressLoader from './loaders/express';
 import config from './config';
+import databaseLoader from './loaders/database';
 
-const app = express();
+const app = expressLoader();
 
 const { PORT } = config.server;
 
 (async () => {
   try {
-    await expressLoader(app);
+    await databaseLoader();
     app.listen(PORT, () => console.log(`Server Listening at PORT: ${PORT}`));
   } catch (err) {
     console.error('Could not connect to the server');

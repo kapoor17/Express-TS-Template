@@ -3,7 +3,7 @@ import MongoStore from 'connect-mongo';
 import session, { SessionOptions } from 'express-session';
 import config from '../config';
 
-const sessionsLoader = async (app: Express) => {
+const sessionsLoader = (app: Express) => {
   try {
     const { SESSION_SECRET } = config.session;
     const { NODE_ENV } = config.server;
